@@ -71,9 +71,9 @@ class flashcard:
                         print("\nIncorrect. Looking for: ", word, '\n')
 				
 
-print("welcome to bisaya quiz, type 'exit' to quit.")
+print("\nwelcome to bisaya quiz, type 'exit' to quit.")
 print("Please load a wordlist in dictionary format")
-print("Select a number from the following list to load wordlist:")
+print("Select a number from the following list to load wordlist:\n")
 fc=flashcard()
 fc.choose_wordlist()
 fc.quiz()
