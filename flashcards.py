@@ -6,6 +6,7 @@ class flashcard:
     def __init__(self):
         self.words = {}
         self.files = []
+        self.incorrect = []
         self.deduped = {}
 
     ###  lists the files in the directory, prompts for a choice, then tries to load the list.
@@ -23,7 +24,7 @@ class flashcard:
         if user_answer.lower() == "exit":
             raise SystemExit()
         elif user_answer.isdigit():
-            with open(file_list[int(user_answer)]) as f:
+            with open(file_list[int(user_answer)], encoding='utf-8') as f:
                 data = f.read()
                 self.words = json.loads(data)
 
@@ -42,34 +43,47 @@ class flashcard:
         '''
 
         while(True):
-            english, bisaya = random.choice(list(self.words.items()))
-			
-            print("{}".format(english))
-            user_answer = input()
-            if (user_answer.lower() == "exit"):
-                raise SystemExit()
+
+            if len(self.incorrect) == 0:
+                keys = list(self.words.keys())
+                random.shuffle(keys)
             else:
-                for word in bisaya:
-                    length = len(bisaya)
-                    if(user_answer.lower() == word and length == 1):
-                        print("\nCorrect\n")
-                    elif(isinstance(bisaya, list)):
-                        copy = []
-                        found = False
-                        for word in bisaya:
-                            if user_answer.lower() != word:
-                                copy.append(word)
-                            if user_answer.lower() == word:
-                                found = True
-                        if found:
-                            print("\nCorrect")
-                            print('Also accepted: ', copy, '\n')
-                            break
+                for answer in self.incorrect:
+                    keys = self.incorrect.pop()
+
+            for key in keys: 
+            #english, bisaya = random.choice(list(self.words.items()))
+                words = self.words[key]
+
+                print("{}".format(key))
+                user_answer = input()
+                if (user_answer.lower() == "exit"):
+                    raise SystemExit()
+                else:
+                    for word in words:
+                        length = len(words)
+                        if(user_answer.lower() == word and length == 1):
+                            print("\nCorrect\n")
+                        elif(isinstance(words, list)):
+                            copy = []
+                            found = False
+                            for word in words:
+                                if user_answer.lower() != word:
+                                    copy.append(word)
+                                if user_answer.lower() == word:
+                                    found = True
+                            if found:
+                                print("\nCorrect")
+                                print('Also accepted: ', copy, '\n')
+                                break
+                            else:
+                                print("\nIncorrect. Looking for: ", words, '\n')
+                                self.incorrect.append(key)
+                                break
                         else:
-                            print("\nIncorrect. Looking for: ", word, '\n')
-                    else:
-                        print("\nIncorrect. Looking for: ", word, '\n')
-				
+                            print("\nIncorrect. Looking for: ", words, '\n')
+                            self.incorrect.append(key)
+                    print("incorrect list: ", self.incorrect)
 
 print("\nwelcome to bisaya quiz, type 'exit' to quit.")
 print("Please load a wordlist in dictionary format")
