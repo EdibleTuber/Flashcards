@@ -49,7 +49,8 @@ class flashcard:
                 random.shuffle(keys)
             else:
                 for answer in self.incorrect:
-                    keys = self.incorrect.pop()
+                    keys = self.incorrect.copy()
+                    self.incorrect.clear()
 
             for key in keys: 
             #english, bisaya = random.choice(list(self.words.items()))
