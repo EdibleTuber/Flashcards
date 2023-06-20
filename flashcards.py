@@ -13,7 +13,8 @@ class flashcard:
     def choose_wordlist(self):
         file_list = []           
         self.files = os.listdir()
-        for file in self.files:
+        txt_files = filter(lambda x: x[-4:] == '.txt', self.files)
+        for file in txt_files:
             if os.path.isfile(file):
                 file_list.append(file)
                 print(file_list.index(file), "->", file_list[file_list.index(file)])
